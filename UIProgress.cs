@@ -52,9 +52,21 @@ public class UIProgress<T> : IDisposable,IProgress<T>
     }
      public static class UIExtensions
     {
+        public static SynchronizationContext Synchronization { get; set; } = SynchronizationContext.Current;
 
-        public static UIProgress<Action> GetInvoke(this FrameworkElement element) => new UIProgress<Action>(a => a());
-        public  static UIProgress<T> GetProgress<T>(this FrameworkElement element,Action<T> action) => new UIProgress<T>(r => action(r));
+        public static UIProgress<Action> GetInvoke(this FrameworkElement element)
+        {
+            UIProgress<Action> a=null;
+            Synchronization.Send((r) =>{ a= new UIProgress<Action>((d) => d()); },null);
+            return a;
+        }
+        public static UIProgress<T> GetProgress<T>(this FrameworkElement element, Action<T> action)
+        {
+            UIProgress<T> a=null;
+            Synchronization.Send((r) => { a = new UIProgress<T>(d => action(d)); }, null);
 
+            return a;
+            
+        }
     }
 }
