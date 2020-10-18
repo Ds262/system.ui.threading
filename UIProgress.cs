@@ -1,4 +1,7 @@
- public class UIProgress<T> : IDisposable,IProgress<T>
+using System;
+using System.Theading;
+namespace System.UIThreading{
+public class UIProgress<T> : IDisposable,IProgress<T>
     {
         private bool disposedValue;
         private IProgress<T> v;
@@ -47,3 +50,4 @@
             GC.SuppressFinalize(this);
         }
     }
+}
