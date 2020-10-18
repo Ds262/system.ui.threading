@@ -50,4 +50,11 @@ public class UIProgress<T> : IDisposable,IProgress<T>
             GC.SuppressFinalize(this);
         }
     }
+     public static class UIExtensions
+    {
+
+        public static UIProgress<Action> GetInvoke(this FrameworkElement element) => new UIProgress<Action>(a => a());
+        public  static UIProgress<T> GetProgress<T>(this FrameworkElement element,Action<T> action) => new UIProgress<T>(r => action(r));
+
+    }
 }
